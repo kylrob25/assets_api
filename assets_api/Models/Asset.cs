@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System.ComponentModel.DataAnnotations;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace assets_api.Models;
@@ -9,11 +10,19 @@ public class Asset
     [BsonRepresentation(BsonType.ObjectId)]
     public string? Id { get; set; }
     
-    [BsonElement("name")] public string? Name { get; set; }
+    [BsonElement("name")] 
+    [Required]
+    public string? Name { get; set; }
     
-    [BsonElement("type")] public string? Type { get; set; }
+    [BsonElement("type")]
+    [Required]
+    public string? Type { get; set; }
     
-    [BsonElement("manufacturer")] public string? Manufacturer { get; set; }
+    [BsonElement("manufacturer")]
+    [Required]
+    public string? Manufacturer { get; set; }
     
-    [BsonElement("quantity")] public int? Quantity { get; set; }
+    [BsonElement("quantity")]
+    [Required]
+    public int? Quantity { get; set; }
 }

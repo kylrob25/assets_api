@@ -20,9 +20,16 @@ public class AssetController : ControllerBase
         await _assetService.GetAssets();
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsset(Asset asset)
+    public async Task<IActionResult> CreateAsset([FromBody] Asset asset)
     {
-        // TODO: Check valid variables e.g manufacturer
+        if (!ModelState.IsValid)
+        {
+            return BadRequest("One or more attributes are missing.");
+        }
+        
+        
+        
+        
         await _assetService.CreateAsset(asset);
         
         return CreatedAtAction(nameof(GetAssets), new { asset.Id }, asset);
