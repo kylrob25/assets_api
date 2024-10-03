@@ -16,7 +16,7 @@ public class Asset
     
     [BsonElement("type")]
     [Required]
-    public string? Type { get; set; }
+    public string? AssetType { get; set; }
     
     [BsonElement("manufacturer")]
     [Required]

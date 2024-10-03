@@ -26,9 +26,16 @@ public class AssetController : ControllerBase
         {
             return BadRequest("One or more attributes are missing.");
         }
-        
-        
-        
+
+        if (!string.IsNullOrWhiteSpace(asset.Manufacturer) && !await _assetService.ExistsManufacturer(asset.Manufacturer))
+        {
+            return BadRequest($"Manufacturer '{asset.Manufacturer} does not exist.");
+        }
+
+        if (!string.IsNullOrWhiteSpace(asset.AssetType) && !await _assetService.ExistsAssetType(asset.AssetType))
+        {
+            return BadRequest($"AssetType '{asset.AssetType}' does not exist.");
+        }
         
         await _assetService.CreateAsset(asset);
         
