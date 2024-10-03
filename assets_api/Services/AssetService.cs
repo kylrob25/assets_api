@@ -37,4 +37,18 @@ public class AssetService
     
     public async Task CreateManufacturer(Manufacturer manufacturer) =>
         await _manufacturersCollection.InsertOneAsync(manufacturer);
+    
+    public async Task<bool> ExistsManufacturer(string name)
+    {
+        var filter = Builders<Manufacturer>.Filter.Eq(x => x.Name, name);
+        
+        return await _manufacturersCollection.Find(filter).AnyAsync();
+    }
+    
+    public async Task<bool> ExistsAssetType(string name)
+    {
+        var filter = Builders<AssetType>.Filter.Eq(x => x.Name, name);
+        
+        return await _assetTypesCollection.Find(filter).AnyAsync();
+    }
 }
