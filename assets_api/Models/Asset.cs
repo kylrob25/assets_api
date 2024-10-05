@@ -8,7 +8,7 @@ public class Asset
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string? Id { get; set; }
+    public int? Id { get; set; }
     
     [BsonElement("name")] 
     [Required]

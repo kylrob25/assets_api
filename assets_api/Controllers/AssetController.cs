@@ -6,18 +6,11 @@ namespace assets_api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AssetController : ControllerBase
+public class AssetController(AssetService assetService) : ControllerBase
 {
-    private readonly AssetService _assetService;
-
-    public AssetController(AssetService assetService)
-    {
-        _assetService = assetService;
-    }
-    
     [HttpGet]
     public async Task<List<Asset>> GetAssets() =>
-        await _assetService.GetAssets();
+        await assetService.GetAssets();
 
     [HttpPost]
     public async Task<IActionResult> CreateAsset([FromBody] Asset asset)
@@ -27,17 +20,19 @@ public class AssetController : ControllerBase
             return BadRequest("One or more attributes are missing.");
         }
 
-        if (!string.IsNullOrWhiteSpace(asset.Manufacturer) && !await _assetService.ExistsManufacturer(asset.Manufacturer))
+        if (string.IsNullOrWhiteSpace(asset.Manufacturer) ||
+            !assetService.ExistsManufacturer(asset.Manufacturer))
         {
-            return BadRequest($"Manufacturer '{asset.Manufacturer} does not exist.");
+            return BadRequest($"Manufacturer '{asset.Manufacturer}' does not exist.");
         }
 
-        if (!string.IsNullOrWhiteSpace(asset.AssetType) && !await _assetService.ExistsAssetType(asset.AssetType))
+        if (string.IsNullOrWhiteSpace(asset.AssetType) ||
+            !assetService.ExistsAssetType(asset.AssetType))
         {
             return BadRequest($"AssetType '{asset.AssetType}' does not exist.");
         }
         
-        await _assetService.CreateAsset(asset);
+        await assetService.CreateAsset(asset);
         
         return CreatedAtAction(nameof(GetAssets), new { asset.Id }, asset);
     }
